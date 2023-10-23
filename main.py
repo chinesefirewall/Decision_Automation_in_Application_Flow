@@ -1,4 +1,4 @@
-c# Import necessary Python libraries
+# Import necessary Python libraries
 import io
 import time
 from datetime import datetime
