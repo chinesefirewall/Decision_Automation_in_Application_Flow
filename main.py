@@ -1,4 +1,4 @@
-# Import necessary Python libraries
+c# Import necessary Python libraries
 import io
 import time
 from datetime import datetime
@@ -31,18 +31,19 @@ queries = {
         GROUP BY client_id
     """,
     'days_since_last_late_payment': """
-        SELECT client_id, DATEDIFF(CURRENT_DATE, MAX(matured_on)) AS days_since_last_late_payment
+        SELECT client_id, CURRENT_DATE - MAX(matured_on) AS days_since_last_late_payment
         FROM loan
         WHERE status = 'overdue'
         GROUP BY client_id
+
     """,
     'profit_in_last_90_days_rate': """
-        SELECT client_id, SUM(interest) / SUM(amount) AS profit_in_last_90_days_rate
-        FROM payment
-        JOIN loan ON payment.loan_id = loan.id
-        WHERE payment.created_on >= CURRENT_DATE - INTERVAL '90 days'
-        GROUP BY client_id
-    """
+    SELECT client_id, SUM(interest) / SUM(payment.amount) AS profit_in_last_90_days_rate
+    FROM payment
+    JOIN loan ON payment.loan_id = loan.id
+    WHERE payment.created_on >= CURRENT_DATE - INTERVAL '90 days'
+    GROUP BY client_id
+"""
 }
 
 # Define batch size for data processing, useful when handling large datasets
